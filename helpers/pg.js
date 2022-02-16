@@ -1,15 +1,10 @@
-const { Pool } = require("pg");
-require("dotenv").config();
+import pkg from 'pg';
+import {config} from "../config/config.js";
 
-const {USER, HOST, PASS, DATABASE} = process.env;
 
-const config = {
-    user:USER,
-    host:HOST, 
-    password:PASS,
-    database:DATABASE
-};
+const {Pool} = pkg;
 const pool = new Pool(config);
+
 const getFriends = async ()=>{
     try {
         const res = await pool.query("SELECT * FROM friend");
@@ -63,4 +58,4 @@ const endApp = async ()=>{
     pool.end();
 }
 
-module.exports = {getFriends, getInsertFriend, getDeleteFriends, getUpdateFriends, getFriend, endApp}
+export {getFriends, getInsertFriend, getDeleteFriends, getUpdateFriends, getFriend, endApp};

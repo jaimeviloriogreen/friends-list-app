@@ -1,4 +1,4 @@
-const inquirer = require("inquirer");
+import inquirer from "inquirer";
 
 const getChoice = async ()=>{
     const question = {
@@ -120,4 +120,4 @@ const updateFriends = async (toUpdate)=>{
     return updated;
 }
 
-module.exports = {getChoice, getFname, getLname, getProfession, deleteFriends, updateFriends}
+ export {getChoice, getFname, getLname, getProfession, deleteFriends, updateFriends};

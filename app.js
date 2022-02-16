@@ -1,15 +1,16 @@
 
-const {getChoice,  getFname, getLname, getProfession, deleteFriends, updateFriends} = require("./helpers/inquirer.js");
-const {getFriends, getInsertFriend, getDeleteFriends,getUpdateFriends,getFriend, endApp} = require("./helpers/pg.js");
-const { v4: uuidv4 } = require('uuid'); 
-require('colors');
+import {getChoice,  getFname, getLname, getProfession, deleteFriends, updateFriends} from "./helpers/inquirer.js";
+import {getFriends, getInsertFriend, getDeleteFriends,getUpdateFriends,getFriend, endApp} from "./helpers/pg.js";
+
+import { v4 as uuidv4 } from 'uuid';
+import 'colors';
 
 main();
 
 async function main(){
     console.clear();
     console.log("");
-    console.log("Welcome to my friend list @pp!".yellow);
+    console.log("Welcome to my friends list @pp!".yellow);
     console.log("");
     let opt = "";
     do{
@@ -31,6 +32,7 @@ async function main(){
 
                 const insert = await getInsertFriend(id, firstName, lastName, profession);
                 insert >= 1 ? console.log(`One friend have been inserted!`.green) : 'Nothing have been inserted!';
+                console.log("");
                 break;
             case "3":
                 console.clear();
@@ -47,7 +49,8 @@ async function main(){
 
                 const upd = await getUpdateFriends(firstNameUpdate,lastNameUpdate, professionUpdate, getOneFriend[0].id);
 
-                upd >= 1 ? console.log(`One friend have been updated!`.green) : 'Nothing have been inserted!'
+                upd >= 1 ? console.log(`One friend have been updated!`.green) : 'Nothing have been inserted!';
+                console.log("");
                 break;
             case "4":
                 console.clear();
@@ -56,7 +59,8 @@ async function main(){
 
                 const del = await getDeleteFriends(res);
                 console.clear();
-                console.log(`You have deleted ${del} friend(s)!`.green);            
+                console.log(`You have deleted ${del} friend(s)!`.green); 
+                console.log("");           
             default:
                 break;
         }       
