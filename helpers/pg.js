@@ -8,7 +8,7 @@ const pool = new Pool(config);
 const getFriends = async ()=>{
     try {
         const res = await pool.query("SELECT * FROM friend");
-        return res.rows;
+        return res.rows.length > 0 ? res.rows : null;
     } catch (e) {
         console.log(`Error: ${e.message}`);
     }

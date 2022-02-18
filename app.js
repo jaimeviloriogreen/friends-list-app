@@ -3,24 +3,25 @@ import {getChoice,  getFname, getLname, getProfession, deleteFriends, updateFrie
 import {getFriends, getInsertFriend, getDeleteFriends,getUpdateFriends,getFriend, endApp} from "./helpers/pg.js";
 
 import { v4 as uuidv4 } from 'uuid';
-import 'colors';
+import {advise} from "./module/messages.js";
 
 main();
 
 async function main(){
-    console.clear();
-    console.log("");
-    console.log("Welcome to my friends list @pp!".yellow);
-    console.log("");
+    advise("Welcome to my friends list @pp!", "yellow");
+
     let opt = "";
     do{
         opt = await getChoice();
         switch (opt) {
             case "1":
                 const friends = await getFriends();
-                console.clear();
-                console.table(friends);
-                
+                if(friends){
+                    console.clear();
+                    console.table(friends);
+                    break;
+                }
+                advise("There is not friends to show!", "yellow");
                 break;
             case "2":
                 console.clear();
@@ -31,43 +32,49 @@ async function main(){
                 console.clear();
 
                 const insert = await getInsertFriend(id, firstName, lastName, profession);
-                insert >= 1 ? console.log(`One friend have been inserted!`.green) : 'Nothing have been inserted!';
-                console.log("");
+                if(insert >= 1 ) advise(`One friend have been inserted!`,"green");
                 break;
             case "3":
                 console.clear();
                 const toUpdate = await getFriends();
-                const result = await updateFriends(toUpdate);
+                if(toUpdate){
+                    const result = await updateFriends(toUpdate);
 
-                const getOneFriend = await getFriend(result);
-                
-                console.clear();
-                const firstNameUpdate = await getFname(getOneFriend[0].fname);
-                const lastNameUpdate = await getLname(getOneFriend[0].lname);
-                const professionUpdate = await getProfession(getOneFriend[0].profession);
-                console.clear();
+                    const getOneFriend = await getFriend(result);
+                    
+                    console.clear();
+                    const firstNameUpdate = await getFname(getOneFriend[0].fname);
+                    const lastNameUpdate = await getLname(getOneFriend[0].lname);
+                    const professionUpdate = await getProfession(getOneFriend[0].profession);
+                    console.clear();
 
-                const upd = await getUpdateFriends(firstNameUpdate,lastNameUpdate, professionUpdate, getOneFriend[0].id);
+                    const upd = await getUpdateFriends(firstNameUpdate,lastNameUpdate, professionUpdate, getOneFriend[0].id);
 
-                upd >= 1 ? console.log(`One friend have been updated!`.green) : 'Nothing have been inserted!';
-                console.log("");
+                    if(upd >= 1 ) advise(`One friend have been updated!`,"green")
+                    
+                    break;
+                }
+                advise("There is not friends to edit!","yellow");
                 break;
             case "4":
                 console.clear();
                 const toDelete = await getFriends();
-                const res = await deleteFriends(toDelete);
+                if(toDelete){
+                    const res = await deleteFriends(toDelete);
 
-                const del = await getDeleteFriends(res);
-                console.clear();
-                console.log(`You have deleted ${del} friend(s)!`.green); 
-                console.log("");           
+                    const del = await getDeleteFriends(res);
+                    
+                    advise(`You have deleted ${del} friend(s)!`,"green"); 
+                    break;
+                }          
+                advise(`There is not friends to delete!`,"yellow"); 
+                break;
             default:
                 break;
         }       
     }while(opt != "5");
 
-    console.clear();
-    console.log("Session end!".green);
+    advise("Session end!","green");
     endApp();
 }
 
